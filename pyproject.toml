@@ -12,6 +12,8 @@ transformers = "^4.45.1"
 torch = "^2.4.1"
 nltk = "^3.9.1"
 sqlalchemy = "^2.0.35"
+flask-httpauth = "^4.8.0"
+flask-swagger-ui = "^4.11.1"
 
 
 [tool.poetry.group.dev.dependencies]

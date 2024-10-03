@@ -1,0 +1,14 @@
+{
+    "POSITIVE": [
+        "Celebrate your wins!",
+        "Engage in joyful activities."
+    ],
+    "NEGATIVE": [
+        "Try deep breathing.",
+        "Write in a journal."
+    ],
+    "NEUTRAL": [
+        "Go for a walk.",
+        "Listen to soothing music."
+    ]
+}
