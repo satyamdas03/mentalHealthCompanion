@@ -32,13 +32,19 @@ users = {
 session = Session()
 
 # Load sentiment analysis model
-sentiment_analyzer = pipeline("sentiment-analysis")
+sentiment_analyzer = pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
+
 
 @auth.verify_password
 def verify_password(username, password):
     if username in users and users[username] == password:
         return username
     return None
+
+@app.route('/')
+def home():
+    return "Welcome to the Mental Health Companion API!"
+
 
 @app.route('/api/mood/<int:user_id>', methods=['POST'])
 def mood(user_id):
