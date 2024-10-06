@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Companion</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            color: #4A90E2;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4A90E2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #357ABD;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Mental Health Companion</h1>
+        <p>Welcome to the Mental Health Companion application! This tool is designed to support your mental health
+            journey.</p>
+        <p>Here, you can create an account, track your mood, and receive personalized coping strategies based on your
+            feelings.</p>
+
+        <h2>Create an Account</h2>
+        <form id="userForm">
+            <input type="text" id="username" placeholder="Enter your username" required>
+            <button type="submit">Create User</button>
+        </form>
+
+        <div id="response" style="margin-top: 20px;"></div>
+    </div>
+
+    <script>
+        document.getElementById('userForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const res = await fetch('/api/user', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username })
+            });
+            const data = await res.json();
+            document.getElementById('response').innerText = JSON.stringify(data);
+        };
+    </script>
+</body>
+
+</html>

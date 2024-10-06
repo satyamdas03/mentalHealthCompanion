@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template  # Import render_template
 from transformers import pipeline
 from sqlalchemy.orm import sessionmaker
 from models.user import User, Session
@@ -43,8 +43,7 @@ def verify_password(username, password):
 
 @app.route('/')
 def home():
-    return "Welcome to the Mental Health Companion API!"
-
+    return render_template('index.html')  # Render the index.html template
 
 @app.route('/api/mood/<int:user_id>', methods=['POST'])
 def mood(user_id):
