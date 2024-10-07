@@ -51,7 +51,15 @@
         <h2>Create an Account</h2>
         <form id="userForm">
             <input type="text" id="username" placeholder="Enter your username" required>
+            <input type="password" id="password" placeholder="Enter your password" required> <!-- Password field -->
             <button type="submit">Create User</button>
+        </form>
+
+        <h2>Already a user?</h2>
+        <form id="loginForm">
+            <input type="text" id="loginUsername" placeholder="Enter your username" required>
+            <input type="password" id="loginPassword" placeholder="Enter your password" required>
+            <button type="submit">Login</button>
         </form>
 
         <div id="response" style="margin-top: 20px;"></div>
@@ -61,10 +69,24 @@
         document.getElementById('userForm').onsubmit = async (e) => {
             e.preventDefault();
             const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value; // Get password
             const res = await fetch('/api/user', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username })
+                body: JSON.stringify({ username, password }) // Send username and password
+            });
+            const data = await res.json();
+            document.getElementById('response').innerText = JSON.stringify(data);
+        };
+
+        document.getElementById('loginForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
             });
             const data = await res.json();
             document.getElementById('response').innerText = JSON.stringify(data);

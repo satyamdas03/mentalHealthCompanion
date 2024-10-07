@@ -24,9 +24,9 @@ app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 auth = HTTPBasicAuth()
 
-users = {
-    "admin": "password"
-}
+# users = {
+#     "admin": "password"
+# }
 
 # Initialize the database session
 session = Session()
@@ -35,11 +35,11 @@ session = Session()
 sentiment_analyzer = pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
 
 
-@auth.verify_password
-def verify_password(username, password):
-    if username in users and users[username] == password:
-        return username
-    return None
+# @auth.verify_password
+# def verify_password(username, password):
+#     if username in users and users[username] == password:
+#         return username
+#     return None
 
 @app.route('/')
 def home():
@@ -91,13 +91,31 @@ def exercises(user_id):
 def create_user():
     data = request.json
     username = data.get("username")
-    if not username:
-        return jsonify({"error": "Username is required"}), 400
-    
-    new_user = User(username=username)
+    password = data.get("password")
+
+    if not username or not password:
+        return jsonify({"error": "Username and password are required"}), 400
+
+    # Check if the user already exists
+    existing_user = session.query(User).filter_by(username=username).first()
+    if existing_user:
+        return jsonify({"error": "User already exists"}), 400
+
+    new_user = User(username=username, password=password)  # Assuming User model has password field
     session.add(new_user)
     session.commit()
     return jsonify({"message": "User created successfully", "user_id": new_user.id})
+
+@app.route('/api/login', methods=['POST'])
+def login_user():
+    data = request.json
+    username = data.get("username")
+    password = data.get("password")
+
+    user = session.query(User).filter_by(username=username, password=password).first()
+    if user:
+        return jsonify({"message": "Login successful", "user_id": user.id})
+    return jsonify({"error": "Invalid username or password"}), 401
 
 @app.route('/api/user/<int:user_id>', methods=['GET'])
 def get_user(user_id):
